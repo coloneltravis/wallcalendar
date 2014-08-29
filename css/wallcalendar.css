@@ -8,15 +8,15 @@
 
 
 .wallcalendar table {border: 1px solid #000;}
-.wallcalendar-nav-prev {background-image:url('/images/prev.png');display:inline;}
-.wallcalendar-nav-next {background-image:url('/images/next.png');display:inline;}
+.wallcalendar-nav-prev a {background-image:url('../img/prev.png');display:inline; text-decoration:none; border:0px; }
+.wallcalendar-nav-next a {background-image:url('../img/next.png');display:inline; text-decoration:none; border:0px; }
 
 .tbl-wallcalendar th.col {text-align:right;}
 
 .tbl-wallcalendar td.day {border: 1px solid #000;background-color:#eee;width:20px;height:32px;font-size:8pt;vertical-align:top;text-align:left;
 							-webkit-border-radius:5px; -moz-border-radius:5px;}
 
-.wallcalendar-popup {display:none;}
+.wallcalendar-popup {display:none; background-color:#ffffb9; border:1px solid #000; z-index:20;}
 .navheader {}
 
 

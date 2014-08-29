@@ -17,10 +17,10 @@
 
 				var myid = $(this).attr('id');
 				var today = new Date();
+				today.setDate(1);
+
 				methods.drawNav(today, myid);
 				methods.drawRows(today, config.rows, myid);
-
-				$(this).append("<div class='wallcalendar-popup' id='" + myid + "-wallcalendar-popup'/>");
 
 				$(this).data('config', settings);
 			});
@@ -29,23 +29,23 @@
 		drawNav : function(thisdate, myid) {
 			var navid = myid + '-navheader';
 
-			if ((thisdate.getMonth()-1) < 0) {
+			if ((thisdate.getMonth()) == 0) {
 				var previd = myid + '-prev-' + (thisdate.getFullYear()-1) + '-' + '11';
 			}
 			else var previd = myid + '-prev-' + (thisdate.getFullYear()) + '-' + (thisdate.getMonth()-1);
 
-			if ((thisdate.getMonth()+1) > 11) {
+			if ((thisdate.getMonth()) == 11) {
 				var nextid = myid + '-next-' + (thisdate.getFullYear()+1) + '-' + '0';
 			}
 			else var nextid = myid + '-next-' + (thisdate.getFullYear()) + '-' + (thisdate.getMonth()+1);
 
 			$('#' + myid).append('<div class="navheader" id="' + navid + '" />');
-			$('#' + navid).append('<a href="#" class="wallcalendar-nav-prev" id="' + previd + '">&lt;&lt;&lt;</a>');
+			$('#' + navid).append('<a href="#" class="wallcalendar-nav-prev" id="' + previd + '"></a>');
 			$('#' + navid).append(methods.getMonthYear(thisdate));
-			$('#' + navid).append('<a href="#" class="wallcalendar-nav-next" id="' + nextid + '">&gt;&gt;&gt;</a>');
+			$('#' + navid).append('<a href="#" class="wallcalendar-nav-next" id="' + nextid + '"></a>');
 	
-			//$('#' + previd).append("<img src='images/prev.png' alt='&lt;&lt;&lt;' />");
-			//$('#' + nextid).append("<img src='images/next.png' alt='&gt;&gt;&gt;' />");
+			$('#' + previd).append("<img src='img/prev.png' alt='&lt;&lt;&lt;' id='" + previd + "'/>");
+			$('#' + nextid).append("<img src='img/next.png' alt='&gt;&gt;&gt;' id='" + nextid + "'/>");
 
 			$('#' + previd).bind('click.wallcalendar', methods.gotomonth);
 			$('#' + nextid).bind('click.wallcalendar', methods.gotomonth);			
@@ -55,6 +55,7 @@
 			var yy = thisdate.getFullYear();
 			var mm = thisdate.getMonth()+1;
 			var daysinmonth = methods.DaysInMonth(yy, mm-1);
+			//alert(daysinmonth);
 
 			var tblid = myid + '-tbl';
 			$('#' + myid).append('<table cellspacing="0" id="' + tblid + '"/>');
@@ -68,7 +69,6 @@
 				$('#' + rowid).append('<th style="white-space:nowrap;" class="col">' + rowtitle + '</th>');
 
 				for (dd = 1; dd <= daysinmonth; dd++) {
-
 					dd = '00' + dd;
 					var len = dd.length;
 					dd = dd.substr(len-2);	
@@ -114,7 +114,11 @@
 		},
 		
 		
-		DaysInMonth : function (y,m) { return 32 - new Date(y,m,32).getDate(); },
+		//DaysInMonth : function (y,m) { return 32 - new Date(y,m,32).getDate(); },
+
+		DaysInMonth : function (y,m) {
+		    return (new Date(new Date(y, m+1, 1, 0, 0, 0, 0)-86400000)).getDate();
+		},
 
 		gotomonth : function(e) {
 			var params = e.target.id.split('-');
@@ -123,6 +127,7 @@
 
 			var d = new Date();
 			d.setFullYear(yy);
+			d.setDate(1);
 			d.setMonth(mm);
 
 			var myid = $(this).parent().parent().attr('id');
@@ -150,36 +155,45 @@
 			
 			return null;
 		},
-		
-		popup : function(e) {
-			
+
+		showPopup : function(myid, thisid) {
+			$('#' + thisid + '-popup').html($('#' + thisid).attr("title"));
+			$('#' + thisid + '-popup').show();
+		},
+
+		hidePopup : function(thisid) {
+			$('.wallcalendar-popup').hide();
 		},
 
 		loadData : function(thisdate, myid) {
 			var config = $('#' + myid).data('config');
+			methods.hidePopup(myid);
+
 			$.ajax({url:config.eventsfeed, data:'mmyy=' + Math.round(thisdate.getTime()/1000),
 								success: function(res) {
 									$.each(res, function(i, el) {
 										//alert(el.id + ' ' + el.start + ' ' + el.type);
-										var itemid = myid + '-r' + el.id + '-d' + el.start.substr(0,6);
-										
-										var start = el.start.substr(6);
-										var end = el.end.substr(6);
+										if (el.start) {
+											var itemid = myid + '-r' + el.id + '-d' + el.start.substr(0,6);
+											var start = el.start.substr(6);
+											var end = el.end.substr(6);
+											var legend = methods.findLegend(myid, el.type);
 
+											if (legend != null) {
+												for (var d = Number(start); d <= Number(end); d++) {
+													var dd = '00' + d.toString();
+													var len = dd.length;
+													dd = dd.substr(len-2);
 
-										var legend = methods.findLegend(myid, el.type);
+													$('#' + itemid + dd).addClass(legend.classname);
+													$('#' + itemid + dd).attr("title", legend.tooltip);
+													$('#' + itemid + dd).css("background-color", legend.colour);
+													$('#' + itemid + dd).css("background-image", legend.backimage);
 
-										if (legend != null) {
-											for (var d = Number(start); d <= Number(end); d++) {
-												var dd = '00' + d.toString();
-												var len = dd.length;
-												dd = dd.substr(len-2);
-
-												$('#' + itemid + dd).addClass(legend.classname);
-												$('#' + itemid + dd).attr("title", legend.tooltip);
-												$('#' + itemid + dd).css("background-color", legend.colour);
-												$('#' + itemid + dd).css("background-image", legend.backimage);
-												$('#' + itemid + dd).bind('mouseover.wallcalendar', function(e){methods.popup();} );
+													//$('#' + itemid + dd).after("<div id='" + itemid + dd + "-popup' class='wallcalendar-popup' />");
+													//$('#' + itemid + dd).bind('mouseover.wallcalendar', function(e) {methods.showPopup(myid, this.id);} );
+													//$('#' + itemid + dd).bind('mouseout.wallcalendar', function(e) {methods.hidePopup(myid);} );
+												}
 											}
 										}
 									});
