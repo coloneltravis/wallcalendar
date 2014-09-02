@@ -157,7 +157,15 @@
 		},
 
 		showPopup : function(myid, thisid) {
-			$('#' + thisid + '-popup').html($('#' + thisid).attr("title"));
+			var params = thisid.split('-');
+			var str = params[2];
+
+			var d = new Date();
+			d.setFullYear(str.substr(1,4));
+			d.setDate(parseInt(str.substr(7,2)));
+			d.setMonth(parseInt(str.substr(5,2))-1);
+			
+			$('#' + thisid + '-popup').html($('#' + thisid).attr("tooltip") + '<br/>' + d.toDateString());
 			$('#' + thisid + '-popup').show();
 		},
 
@@ -186,13 +194,13 @@
 													dd = dd.substr(len-2);
 
 													$('#' + itemid + dd).addClass(legend.classname);
-													$('#' + itemid + dd).attr("title", legend.tooltip);
+													$('#' + itemid + dd).attr("tooltip", legend.tooltip);
 													$('#' + itemid + dd).css("background-color", legend.colour);
 													$('#' + itemid + dd).css("background-image", legend.backimage);
 
-													//$('#' + itemid + dd).after("<div id='" + itemid + dd + "-popup' class='wallcalendar-popup' />");
-													//$('#' + itemid + dd).bind('mouseover.wallcalendar', function(e) {methods.showPopup(myid, this.id);} );
-													//$('#' + itemid + dd).bind('mouseout.wallcalendar', function(e) {methods.hidePopup(myid);} );
+													$('#' + itemid + dd).append("<div id='" + itemid + dd + "-popup' class='wallcalendar-popup' />");
+													$('#' + itemid + dd).bind('mouseover.wallcalendar', function(e) {methods.showPopup(myid, this.id);} );
+													$('#' + itemid + dd).bind('mouseout.wallcalendar', function(e) {methods.hidePopup(myid);} );
 												}
 											}
 										}
