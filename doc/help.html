@@ -1,0 +1,88 @@
+<html>
+<head>
+<style>
+	.docbanner {padding:20px;width:100%;background-color:#3899e0;color:#fff;}
+	.langjs {display:block; width:80%; padding:20px; white-space:pre; font-family:monospace; background-color:#d3d3d3;}
+</style>
+</head>
+
+<body>
+
+<div class="docbanner">
+	<h1>Documentation</h1>
+</div>
+
+<pre>
+	<code class="langjs">
+		<h2>Page Header</h2>
+		&lt;script type="text/javascript" src="../js/jquery.min.js"&gt; &lt;/script&gt;
+		&lt;link rel="stylesheet" media="all" type="text/css" href="css/wallcalendar.css" /&gt;
+		&lt;script type="text/javascript" src="js/wallcalendar.plugin.js"&gt; &lt;/script&gt;
+	</code>
+</pre>
+
+
+<pre>
+	<code class="langjs">
+		<h2>Example 1 - Annual leave calendar</h2>
+
+		$('#leavechart').wallcalendar({
+
+			    eventsfeed:'leaveevents.cfm',
+
+				rows: [
+					  	{id:1368,title:'Jake Bourne'},
+					  	{id:1139,title:'Andrew Graham'},
+					  	{id:1257,title:'Mark Thomas'},
+					  	{id:1142,title:'Vicki Harris'}
+					  ],
+
+					legend: [
+							{id:1,tooltip:'Full day',classname:'full',colour:'#f00'},
+							{id:4,tooltip:'Flexi day',classname:'flexi',colour:'#ff0'},
+							{id:3,classname:'public',tooltip:'Public holiday',colour:'#f0f'},
+							{id:5,classname:'half',tooltip:'Half day',colour:'#0ff'}
+						]
+		});
+	</code>
+</pre>
+
+
+<pre>
+	<code class="langjs">
+		<h2>Example 2 - Room bookings calendar</h2>
+			$('#roombookings').wallcalendar(){
+
+					eventsfeed: [
+						{id:"room1", start:"20140906", end:"20140908", type:"1"},
+						{id:"room2", start:"20141005", end:"20141005", type:"1"},
+						{id:"room3", start:"20141101", end:"20141107", type:"1"},
+						{id:"room4", start:"20140720", end:"20140725", type:"1"}
+					],
+
+					rows:[
+							{id:'room1',title:'Harlech'},
+							{id:'room2',title:'Beaumaris'},
+							{id:'room3',title:'Caernarfon'},
+							{id:'room4',title:'Caerphilly'}
+						],
+
+					legend: [
+								{id:1,tooltip:'Booked',classname:'roombooked',colour:'#f00'}
+						]
+			});
+		});
+	</code>
+</pre>
+
+
+<pre>
+	<code class="langjs">
+		<h2>Page Body</h2>
+		&lt;div&gt; id="leavechart">&lt;/div&gt;
+		&lt;div&gt; style="margin-top:50px;" id="roombookings">&lt;/div&gt;
+	</code>
+</pre>
+
+</body>
+</html>

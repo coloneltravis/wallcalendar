@@ -15,6 +15,10 @@
 		$('#roombookings').wallcalendar( {rows:[{id:1,title:'Harlech 1'},{id:2,title:'Harlech 2'},{id:3,title:'Alexander'},{id:4,title:'Board Room'}],
 		legend:[{id:1,tooltip:'Booked',classname:'roombooked',colour:'#f00'},{id:2,tooltip:'Free',classname:'roomfree',colour:'#00f'}] });
 	});
+
+	function day_clicked() {
+		//alert('day clicked!');
+	}
 </script>
 </head>
 <body>

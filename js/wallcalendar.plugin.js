@@ -9,7 +9,8 @@
 			var settings = {
 				'eventsfeed'	: '',
 				'rows'			: [{id:1,title:'row1'},{id:2,title:'row2'},{id:3,title:'row3'}],
-				'legend'		: [{id:1,tooltip:'Full day',classname:'full',colour:'#f00'},{id:4,tooltip:'Flexi day',classname:'flexi',colour:'#ff0'},{id:3,classname:'public',tooltip:'Public holiday',colour:'#f0f'},{id:5,classname:'half',tooltip:'Half day',colour:'#0ff'}]
+				'legend'		: [{id:1,tooltip:'Full day',classname:'full',colour:'#f00'},{id:4,tooltip:'Flexi day',classname:'flexi',colour:'#ff0'},{id:3,classname:'public',tooltip:'Public holiday',colour:'#f0f'},{id:5,classname:'half',tooltip:'Half day',colour:'#0ff'}],
+				'onDayClick'	: function() {}
 			};
 
 			return $(this).each(function() {
@@ -21,7 +22,7 @@
 
 				methods.drawNav(today, myid);
 				methods.drawRows(today, config.rows, myid);
-
+				
 				$(this).data('config', settings);
 			});
 		},
@@ -79,9 +80,15 @@
 					
 					var colid = rowid + '-d' + yy + mm + dd;
 					$('#' + rowid).append('<td class="col day" id="' + colid + '">' + dd + '</td>');
+					//$('#' + colid).bind('click', methods.daySelected(myid));
 				}
 			}
 			
+		},
+		
+		daySelected : function(myid) {
+			var config = $('#' + myid).data('config');
+			config.onDayClick.call(this);
 		},
 
 		getMonthYear : function(thisdate) {
@@ -178,34 +185,34 @@
 			methods.hidePopup(myid);
 
 			$.ajax({url:config.eventsfeed, data:'mmyy=' + Math.round(thisdate.getTime()/1000),
-								success: function(res) {
-									$.each(res, function(i, el) {
-										//alert(el.id + ' ' + el.start + ' ' + el.type);
-										if (el.start) {
-											var itemid = myid + '-r' + el.id + '-d' + el.start.substr(0,6);
-											var start = el.start.substr(6);
-											var end = el.end.substr(6);
-											var legend = methods.findLegend(myid, el.type);
+						success: function(res) {
+							$.each(res, function(i, el) {
+								//alert(el.id + ' ' + el.start + ' ' + el.type);
+								if (el.start) {
+									var itemid = myid + '-r' + el.id + '-d' + el.start.substr(0,6);
+									var start = el.start.substr(6);
+									var end = el.end.substr(6);
+									var legend = methods.findLegend(myid, el.type);
 
-											if (legend != null) {
-												for (var d = Number(start); d <= Number(end); d++) {
-													var dd = '00' + d.toString();
-													var len = dd.length;
-													dd = dd.substr(len-2);
+									if (legend != null) {
+										for (var d = Number(start); d <= Number(end); d++) {
+											var dd = '00' + d.toString();
+											var len = dd.length;
+											dd = dd.substr(len-2);
 
-													$('#' + itemid + dd).addClass(legend.classname);
-													$('#' + itemid + dd).attr("tooltip", legend.tooltip);
-													$('#' + itemid + dd).css("background-color", legend.colour);
-													$('#' + itemid + dd).css("background-image", legend.backimage);
+											$('#' + itemid + dd).addClass(legend.classname);
+											$('#' + itemid + dd).attr("tooltip", legend.tooltip);
+											$('#' + itemid + dd).css("background-color", legend.colour);
+											$('#' + itemid + dd).css("background-image", legend.backimage);
 
-													$('#' + itemid + dd).append("<div id='" + itemid + dd + "-popup' class='wallcalendar-popup' />");
-													$('#' + itemid + dd).bind('mouseover.wallcalendar', function(e) {methods.showPopup(myid, this.id);} );
-													$('#' + itemid + dd).bind('mouseout.wallcalendar', function(e) {methods.hidePopup(myid);} );
-												}
-											}
+											$('#' + itemid + dd).append("<div id='" + itemid + dd + "-popup' class='wallcalendar-popup' />");
+											$('#' + itemid + dd).bind('mouseover.wallcalendar', function(e) {methods.showPopup(myid, this.id);} );
+											$('#' + itemid + dd).bind('mouseout.wallcalendar', function(e) {methods.hidePopup(myid);} );
 										}
-									});
+									}
 								}
+							});
+						}
 			});
 		}
 	};
