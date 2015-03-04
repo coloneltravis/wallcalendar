@@ -1,15 +1,33 @@
 <html>
 <head>
 <style>
-	.docbanner {padding:20px;width:100%;background-color:#3899e0;color:#fff;}
-	.langjs {display:block; width:80%; padding:20px; white-space:pre; font-family:monospace; background-color:#d3d3d3;}
+	body {font-family: verdana, arial, helvetica; font-size:11pt;}
+	.docbanner {padding:20px;width:95%;background-color:#3899e0;color:#fff;}
+	.text {width:90%;}
+	.langjs {display:block; width:80%; margin-left:50px; padding:20px; white-space:pre; font-family:monospace; background-color:#d3d3d3;}
 </style>
 </head>
 
 <body>
 
 <div class="docbanner">
-	<h1>Documentation</h1>
+	<h1>Getting started</h1>
+</div>
+<p></p>
+
+<div class="text">
+	<p>The wall calendar plugin provides a month-by-month view of several calendar items. The idea originates from the "Sasco" wall charts
+	which are often seen in offices to show annual leave and other appointments for staff.  It would also be well-suited to a room booking application
+	to show the availability dates for rooms in a hotel.</p>
+	<p>The plugin is written in Javascript/jQuery so will run entirely on the client. It can easily be configured with a JSON-formatted data feed which
+	can either be generated dynamically by a server-side script or a static text file. As the user navigates to different months, the plugin will make a request
+	for a new set of event data, so it is not necessary to provide a single file for a whole year of data.</p>
+	<p>The UI elements of the plugin such as the navigation buttons, headings and days can all be modified by editing the CSS file.<p> 
+</div>
+
+<div class="text">
+	<p>First things first, you will need tell the web browser to load the jQuery, the plugin and its CSS by placing the following code in
+	the &lt;head&gt; of the page.</p>
 </div>
 
 <pre>
@@ -22,6 +40,7 @@
 </pre>
 
 
+<p></p>
 <pre>
 	<code class="langjs">
 		<h2>Example 1 - Annual leave calendar</h2>
@@ -31,10 +50,10 @@
 			    eventsfeed:'leaveevents.cfm',
 
 				rows: [
-					  	{id:1368,title:'Jake Bourne'},
-					  	{id:1139,title:'Andrew Graham'},
-					  	{id:1257,title:'Mark Thomas'},
-					  	{id:1142,title:'Vicki Harris'}
+					  	{id:101,title:'David Cameron'},
+					  	{id:102,title:'Nick Clegg'},
+					  	{id:103,title:'George Osborne'},
+					  	{id:104,title:'Vince Cable'}
 					  ],
 
 					legend: [
@@ -47,6 +66,12 @@
 	</code>
 </pre>
 
+
+<div class="text">
+	<p>The following example shows how the plugin can be initialised as a room bookings calendar. Instead of specifying a path to a file,
+	the data for each room is passed in JSON format to the eventsfeed option. In reality, this would not be an ideal implementation since
+	the Javascript would need to be edited whenever a room is booked. </p>
+</div>
 
 <pre>
 	<code class="langjs">
@@ -75,7 +100,7 @@
 	</code>
 </pre>
 
-
+<p></p>
 <pre>
 	<code class="langjs">
 		<h2>Page Body</h2>

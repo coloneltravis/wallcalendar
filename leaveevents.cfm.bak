@@ -2,8 +2,8 @@
 	<cfsetting showdebugoutput="false" />
 	<cfif StructKeyExists(url, "mmyy")>
 		<cfset jsdate = DateAdd("s", url.mmyy, CreateDate(1970,1,1)) />
-		<cfset variables.start = createdate(datepart("yyyy",jsdate), datepart("m", dateadd("m", -1, jsdate)), 1) />
-		<cfset variables.end = createdate(datepart("yyyy",jsdate), datepart("m", dateadd("m", 1, jsdate)), daysinmonth(dateadd("m", 1, jsdate))) />
+		<cfset variables.start = createdate(datepart("yyyy",jsdate), datepart("m", jsdate), 1) />
+		<cfset variables.end = createdate(datepart("yyyy",jsdate), datepart("m", jsdate), daysinmonth(jsdate)) />
 		<cfquery name="qLeave" datasource="MSSQLHSW">
 			select staffid, startdate, enddate, leavetype
 			from tblhswleaverequest lr
