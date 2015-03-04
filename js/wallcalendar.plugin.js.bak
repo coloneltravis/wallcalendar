@@ -192,18 +192,6 @@
 									var itemid = myid + '-r' + el.id + '-d' + el.start.substr(0,6);
 									var start = el.start.substr(6);
 									var end = el.end.substr(6);
-									var m1 = Number(el.start.substr(4,2));
-									var m2 = Number(el.end.substr(4,2));
-
-									// handle events spanning month boundaries
-									if ((m1 != m2) && (m1 == thisdate.getMonth()+1)) {
-										end = methods.DaysInMonth(el.start.substr(0,4), m2);
-									}
-									else if ((m2 != m1) && (m2 == thisdate.getMonth()+1)) {
-										start = '01';
-										itemid = myid + '-r' + el.id + '-d' + el.end.substr(0,6);
-									}
-
 									var legend = methods.findLegend(myid, el.type);
 
 									if (legend != null) {
