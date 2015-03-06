@@ -80,15 +80,16 @@
 					
 					var colid = rowid + '-d' + yy + mm + dd;
 					$('#' + rowid).append('<td class="col day" id="' + colid + '">' + dd + '</td>');
-					//$('#' + colid).bind('click', methods.daySelected(myid));
+					$('#' + colid).bind('click', function() {methods.daySelected(myid, colid)});
 				}
 			}
 			
 		},
 		
-		daySelected : function(myid) {
+		daySelected : function(myid, col) {
 			var config = $('#' + myid).data('config');
-			config.onDayClick.call(this);
+			var obj = {col: col, id: myid};
+			config.onDayClick.call(obj);
 		},
 
 		getMonthYear : function(thisdate) {
